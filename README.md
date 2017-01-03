@@ -1,25 +1,27 @@
-# TrainingSandbox
-This is a collection of Python scripts and modules for training classifiers and making plots. It incorporates wrappers for scikit-learn, XGBoost, etc. Data is handled using Pandas DataFrames or using PyROOT. There are wrapper classes for producing plots with matpotlib and PyROOT.
-
-## Structure
-All of the run scripts are kept in the base directory. The shared classes and tools are kept in the "Tools" directory. Input data should be stored in the "Data" directory. Output from the run scripts--plots, tables, CSV files, etc--is produced in the "Output" directory.
-
-## Example Working Packages and Versions
-   matplotlib (1.5.2)
-   numpy (1.11.2)
-   pandas (0.18.1)
-   scikit-learn (0.18.1)
-   seaborn (0.7.1)
-   tensorflow (0.10.0rc0)
-   Theano (0.8.2)
-   xgboost (0.4a30)
-
+#TrainingSandbox
 
 ***
-##Git Refresher (for terminal controls)
+##Summary
+This is a collection of Python scripts and modules for training classifiers and making plots. It incorporates wrappers for scikit-learn, XGBoost, etc. Data is handled using Pandas DataFrames or using PyROOT. There are wrapper classes for producing plots with matpotlib and PyROOT. There are also some image processing tools for producing high-level features from pixel data.
+
+####Structure
+All of the run scripts are in the base directory. The shared classes and tools are in the "Tools" directory. Input data should be stored in the "Data" directory. Output from the run scripts (plots, tables, CSV files, etc.) is directed to the "Output" directory.
+
+####Example Working Packages and Versions
+    matplotlib (1.5.2)
+    numpy (1.11.2)
+    pandas (0.18.1)
+    scikit-learn (0.18.1)
+    seaborn (0.7.1)
+    tensorflow (0.10.0rc0)
+    Theano (0.8.2)
+    xgboost (0.4a30)
+
+***
+##Git Refresher (for Terminal Work)
 
 ####Clone the repository on your local machine:
-    git clone https://BitbucketUSERNAME@bitbucket.org/jwebste2/tthmvapaper.git ttHMVAPaper
+    git clone https://github.com/jwebste2/TrainingSandbox.git TrainingSandbox
 
 ####Basic Pulling:
     git pull

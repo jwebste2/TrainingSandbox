@@ -2,6 +2,11 @@
 
 from sys import exit
 
+"""
+This is a collection of functions designed to make it easy to print information,
+errors, warning, etc to the terminal window in a clean and consistent way.
+"""
+
 def generic_print( tag , args ):
     if len(args) > 0:
         if hasattr( args[0] , 'write' ):

@@ -8,6 +8,10 @@ import HistTools as htools
 from MVAPaperStyle import *
 setStyle( htools )
 
+"""
+Histogram maps to help producing plots for 
+the ttH Machine Learning paper.
+"""
 
 class TH1Map:
     def __init__( self ):
@@ -48,8 +52,6 @@ class TH1Map:
         legend.AddEntry( self.th1_bkg_map[firstKey] , bkgTitle , "lpe" )
         htools.makePretty( legend , textsize=0.8 , textlocation=htools.LEFT )
         return legend
-
-
 
     
 class TH2Map:

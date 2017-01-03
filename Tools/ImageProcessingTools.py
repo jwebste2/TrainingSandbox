@@ -6,30 +6,36 @@ import pandas
 import csv
 import math
 
-import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
 import numpy as np
-from matplotlib.backends.backend_pdf import PdfPages
 
 from scipy.ndimage import rotate
 from skimage import measure, morphology, restoration, transform
 from skimage.feature import greycomatrix, greycoprops
 
 
-class DR_ImageProcessingTools:
+class ImageProcessingTools:
 
     """ 
-    Contains functions for processing images and generating high-level features
+    Contains functions for processing images and generating high-level features like area, diameter, etc.
     Input is assumed to be a gray scale image as a numpy array, entries [0,255]
+
+    NOTE: This is currently catered to work with the MINST dataset, but it should be easy to generalize
+          in the future.
     """
 
     ##################################################
     # Generic image conversion/altering tools
     ##################################################
-        
+
+    #
+    # Convert [0,255] pixels to [False,True] based on a specified threshold
+    #
     def _convert_binary( self , img , thresh=64 ):
         return img > thresh
 
+    #
+    # Clean up binary images, removing borders and small objects
+    #
     def _clean_binary( self , img_bw ):
         # Remove the edges of the image
         bw2 = img_bw.copy()
@@ -41,6 +47,9 @@ class DR_ImageProcessingTools:
         bw3 = morphology.remove_small_objects(bw2, 5)
         return bw3
 
+    #
+    # Label connected regions in a binary image
+    #
     def _label_binary( self , img_bw , img ):
         # Find the regions in the binary image
         cc , self.num_regions = measure.label( img_bw , return_num=True )
@@ -60,6 +69,7 @@ class DR_ImageProcessingTools:
         cc3[cc2 == sorted(np.unique(cc2))[1:][obj_idx]] = 1
         return cc3
 
+    # Calcaulate the GLCM
     def _calc_glcm( self , img , distances=[5] , angles=[0] , levels=256 , symmetric=False , normed=False ):
         return greycomatrix( img , distances , angles , levels , symmetric , normed )
     
@@ -108,7 +118,12 @@ class DR_ImageProcessingTools:
         ]
 
         self.featureNames = [ f.__name__ for f in self.features ]
-        
+
+    
+    #
+    # Clean the image and then
+    # calculate all of the high-level features
+    #
     def process( self , img ):
 
         self.img = img
@@ -118,21 +133,21 @@ class DR_ImageProcessingTools:
         self.img_labeled = self._label_binary( self.img_binary , self.img )
 
         # Just the properties for region 0
-        self.props       = measure.regionprops( self.img_labeled , self.img )[0] 
+        self.props = measure.regionprops( self.img_labeled , self.img )[0] 
 
         # Calculate GLCM array
-        self.glcm    = self._calc_glcm( self.img )
+        self.glcm = self._calc_glcm( self.img )
         
 
     ##################################################
-    # General features
+    # General feature definitions
     ##################################################
 
     def num_regions( self ):
         return self.num_regions
 
     ##################################################
-    # Regionprops features
+    # Regionprops feature definitions
     ##################################################
 
     def _inertia_tensor( self , idx ):

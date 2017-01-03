@@ -4,10 +4,14 @@ import os
 import Report as report
 
 
-
-
 class MVAResultProcessor:
 
+    """
+    This is a class for keeping track of the performance of different machine learning.
+    The performance of each model is determined by reading output logs from Roberto.
+    It is therefore only useful for the ttH Machine Learning paper.
+    """
+    
     def __init__( self , dataDir="" , dataSubdir="" , outputFileName="" ):
 
         self.maxSoverSqrtB = [ -1 , -1 ]
@@ -114,6 +118,11 @@ class MVAResultProcessor:
     def __repr__( self ):
         return "< %s AUC=%s trainingTime=%gs >" % (self.configName,self.aucStr,self.trainingTime)
 
+
+#
+# Return lists of the machine learning models sorted by
+# different performance metrics...
+#
         
 def key_byAuc( r ):
     return r.auc

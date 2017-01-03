@@ -2,6 +2,10 @@
 
 import ROOT
 
+#
+# Style to be used for the ttH Machine Learning paper
+#
+
 def setStyle( htools ):
     htools.LINEWIDTH             = 3
     htools.COLORMAP["bkg"]       = ROOT.kBlack

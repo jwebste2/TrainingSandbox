@@ -279,7 +279,7 @@ class ExtraRandomForest( GenericClassificationModel ):
 
 
     
-# XGBoost... the best of the best!... maybe
+# XGBoost... the best of the best!
 # (implementation in progress)
 class XGBoost( GenericClassificationModel ):
     def __init__( self , training_data , test_data=None , output_feature='signal' , ignore_features=[] , \

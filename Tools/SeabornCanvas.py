@@ -10,7 +10,6 @@ import sklearn.metrics
 
 import Report as report
 
-from mpl_toolkits.mplot3d import axes3d
 from matplotlib.backends.backend_pdf import PdfPages
 from matplotlib import cm
 
@@ -19,7 +18,7 @@ class SeabornCanvas:
 
     """
     Class to generate plots/histograms/etc for preliminary studies of datasets.
-    Makes use of the Searborn module rather than ROOT, i.e. in case you don't
+    Makes use of the Searborn module rather than ROOT... in case you don't
     want to waste your life troubleshooting ROOT problems :-)
     """
 
@@ -51,16 +50,23 @@ class SeabornCanvas:
         plt.close()
 
         
+    #    
     # Add 1D distribution (similar to above but with seaborn) to Pdf file
+    #
     def drawDist1D( self , xlabel , data , size=(9,9) , color='g' , kde=True , nbins=50 ):
         f, ax = plt.subplots(figsize=size)
         sns.distplot( data[xlabel] , color=color , ax=ax , kde=kde )
         ax.set_xlabel( xlabel )
         f.tight_layout()
         self.save()
-        
+
+
+    #
+    # Draw overlapping 1D histograms using "category" as classifier.
+    # It is assumed that category is set to either 0 or 1 for each event.
+    #
     def drawBinaryDist1D( self , xlabel , category , data , size=(9,9) , kde=True , nbins=50 ):
-        f, ax = plt.subplots(figsize=size)
+        f , ax = plt.subplots(figsize=size)
         r , lo , hi = max(data[xlabel])-min(data[xlabel]) , min(data[xlabel]) , max(data[xlabel])
         bins = np.arange( lo - 0.1*r , hi + 0.1*r , 1.2*r / nbins )
         sns.distplot( data.loc[data[category]==0][xlabel] , ax=ax , norm_hist=True , kde=kde , bins=bins , color='b' )
@@ -69,6 +75,10 @@ class SeabornCanvas:
         f.tight_layout()
         self.save()
 
+        
+    #
+    # Draw ROC curve "class_label" as the classifier
+    #
     def drawROC( self , df , class_label , response_labels , response_titles , signal_class=1 ):
         plt.figure()
         plt.plot([0, 1], [0, 1], 'k--')
@@ -83,10 +93,18 @@ class SeabornCanvas:
         plt.legend(loc="lower right")
         self.save()
 
+
+    #
+    # Draw a box plot
+    #
     def drawBoxPlot( self , df , Xlabel , Ylabel , hue=None ):
         sns.boxplot( x=Xlabel , y=Ylabel , hue=hue , data=df )
         self.save()
-        
+
+
+    #
+    # Draw a generic curve
+    #
     def drawCurve( self , X , Y , Xlabel='' , Ylabel='' ):
         plt.figure()
         plt.plot( X , Y )
@@ -94,6 +112,9 @@ class SeabornCanvas:
         plt.ylabel( Ylabel )
         self.save()
 
+    #
+    # Draw a list of curves
+    #
     def drawCurves( self , X , Y , Ytitles , Xlabel='' , Ylabel='' ):
         plt.figure()
         for iy,y in enumerate(Y):
@@ -103,7 +124,10 @@ class SeabornCanvas:
         plt.legend(loc="upper left")
         self.save()
         
+
+    #
     # Add correlation matrix to Pdf file
+    #
     def drawCorrelationMatrix( self , d , title=None , size=(9,9) ):
         corr = d.corr()
         mask = np.zeros_like( corr , dtype=np.bool )
@@ -122,7 +146,10 @@ class SeabornCanvas:
         f.tight_layout()
         self.save()
         
+
+    #
     # Add a 2D scatter to Pdf file
+    #
     def drawJointPlot( self , d , xname , yname , kind='reg' ):
 
         # Check that columns exist
@@ -137,6 +164,9 @@ class SeabornCanvas:
         self.save()
         
 
+    #
+    # Different method for drawing a 2D scatter plot (without using Seaborn)
+    #
     def drawScatter2D( self , d , xname , yname ):
         if not( xname in d.columns and yname in d.columns ):
             raise Exception( 'Missing column' )
@@ -147,5 +177,9 @@ class SeabornCanvas:
         f.tight_layout()
         self.save()
 
+
+    #
+    # Open up the output file using "Preview"
+    #
     def preview( self ):
         os.system( "open -a Preview "+self.outputPath )        

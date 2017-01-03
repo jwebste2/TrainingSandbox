@@ -6,7 +6,10 @@ import ROOT
 
 class RootCanvas:
 
-    """ Elaborated TCanvas-like class for drawing and saving plots to files """
+    """ 
+    Elaborated TCanvas-like class for drawing and saving ROOT plots to
+    Pdf files.
+    """
 
     def __init__( self ):
 
@@ -42,7 +45,10 @@ class RootCanvas:
         self.canvas.SetLeftMargin( 0.15 )
         self.canvas.SetTicks( 0 , 1 )
 
-        
+
+    #
+    # Save whatever is currently drawn on the canvas to a Pdf file
+    #
     def save( self , name="" , logx=False , logy=False ):
         if logx: self.canvas.SetLogx( 1 )
         if logy: self.canvas.SetLogy( 1 )
@@ -59,14 +65,25 @@ class RootCanvas:
         self.canvas.SetLogy( 0 )
 
 
+    #
+    # Save whatever is currently drawn on the canvas to a wide Pdf image
+    # (for very wide histograms, etc)
+    #
     def saveWide( self , name="" , logx=False , logy=False ):
         self.canvas.SetRightMargin( 0.18 )
         self.save( name , logx , logy )
         self.canvas.SetRightMargin( 0.1 )
 
+    #
+    # Save the canvas to Pdf after making the vertical scale logarithmic
+    #
     def saveLogy( self , name="" ):
         self.save( name , logy=True )
 
+    #
+    # Save whatever is currently drawn to the canvas to a tall Pdf image
+    # (for very tall histograms, etc)
+    #
     def saveTall( self , name="" , logx=False , logy=False ):
         self.canvas.SetCanvasSize( 800 , 1600 )
         self.canvas.SetTopMargin( 0.05 )
@@ -75,7 +92,8 @@ class RootCanvas:
         self.canvas.SetCanvasSize( 800 , 800 )
         self.canvas.SetTopMargin( 0.1 )
         self.canvas.SetBottomMargin( 0.18 )
-        
+
+    # Open up the output directory to view the images
     def openPlotDir( self ):
         os.system( "open "+self.outputPdfDir )
 

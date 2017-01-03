@@ -4,19 +4,33 @@ import ROOT
 import Report as report
 
 
-#
-#  Hist drawing / setup tools
-#
+"""
+A collection of functions that are useful for stylizing and drawing
+ROOT histograms, graphs, etc.
+"""
 
+#
 # Enum text locations
+#
 LEFT   = 1
 RIGHT  = 2
 CENTER = 3
 
-# Style adjustables
+#
+# Style constants
+#
 LINEWIDTH = 2
 
-# Color adjustables
+# These maps should be populated in a separate style file if you want
+# to add options specific to a particular paper (e.g. MVAPaperStyle)
+LINESTYLEMAP   = {} 
+MARKERSTYLEMAP = {} 
+
+#
+# Color constants
+# Just including the ROOT colors/grays that show up well
+# with each other on top of a white canvas.
+#
 COLORMAP = {
     -1 : ROOT.kBlack ,
     0 : ROOT.kBlue-6 ,
@@ -34,8 +48,6 @@ COLORMAP = {
     68 : ROOT.kGreen ,
     95 : ROOT.kYellow ,
 }
-LINESTYLEMAP = {}
-MARKERSTYLEMAP = {}
 GRAYMAP = {
     0 : 17 ,
     1 : 16 ,
@@ -45,31 +57,41 @@ GRAYMAP = {
     5 : 12 ,
 }
 
+# Returns a consistent list of colors that show up well
+# on a white canvas
 def getColor( i ):
     if i in COLORMAP.keys(): return COLORMAP[i]
     if type(i) is int:
         if i >= 100: return i-100
     return ROOT.kBlack
 
+# Returns a consistent list of grayscale options that show up
+# well with each other on a white canvas (for printing in black
+# and white)
+def getGray( i ):
+    if i in GRAYMAP.keys(): return GRAYMAP[i]
+    return ROOT.kBlack
+
+
+# Returns a consistent list of common line styles
 def getLineStyle( i ):
     if i in LINESTYLEMAP.keys(): return LINESTYLEMAP[i]
     if type(i) is int:
         return i
     return ROOT.kSolid
 
+# Returns a consistent list of common marker styles
 def getMarkerStyle( i ):
     if i in MARKERSTYLEMAP.keys(): return MARKERSTYLEMAP[i]
     if type(i) is int:
         return (20+i) % 100
     return 20
 
-def getGray( i ):
-    if i in GRAYMAP.keys(): return GRAYMAP[i]
-    return ROOT.kBlack
-
+# Normalize a histogram
 def norm( h , n=1.0 ):
     h.Scale( n / h.Integral() )
 
+# Rescale the upper bound of a histogram by a factor "scale"
 def scaleMax( h , scale ):
     if type(h) is list:
         m = max( [ ih.GetMaximum() for ih in h ] )
@@ -80,14 +102,9 @@ def scaleMax( h , scale ):
         h.SetMaximum( scale * h.GetMaximum() )
         h.SetMinimum( 0.0 )
 
-def getBinNormalization( h ):
-    xrange = h.GetXaxis().GetBinLowEdge( h.GetXaxis().GetFirst() ) - h.GetXaxis().GetBinUpEdge( h.GetXaxis().GetLast() )
-    return xrange / float(h.GetNbinsX())
-    
-
 #
-# Boiler plate function for configuring any root object so it
-# looks at least a little bit nice...
+# Boiler plate function for configuring any ROOT object so it
+# looks at least a little bit nice on a white canvas...
 #    
 def makePretty( o , color=0 , textsize=1.0 , textlocation=LEFT , linewidth=-1 , linestyle=ROOT.kSolid , fill=False ):
 

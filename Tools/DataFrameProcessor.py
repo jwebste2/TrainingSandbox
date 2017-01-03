@@ -190,8 +190,8 @@ class DataFrameProcessor:
     def append( self , df ):
         self.data = self.data.append( df )
 
-        
-    # Save to CSV file
+
+    # Save the DataFrame to CSV file
     def saveCsv( self , path ):
         self.data.to_csv( path )
         
