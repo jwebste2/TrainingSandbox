@@ -32,7 +32,8 @@ class SeabornCanvas:
         self.pdf = PdfPages( self.outputPath )
         
         # Set the plotting style
-        sns.set_style( 'darkgrid' )
+        #sns.set_style( 'darkgrid' )
+        sns.set_style( 'white' )
 
     # 
     # Close the Pdf
@@ -44,11 +45,14 @@ class SeabornCanvas:
 
     #
     #  Add current figure to Pdf file and then close plot
+    #  Also save to path if provided
     #
-    def save( self ):
+    def save( self , path=None ):
         self.pdf.savefig()
+        if not( path==None ):
+            plt.savefig( path+'.png' )
+            plt.savefig( path+'.svg' )
         plt.close()
-
         
     #    
     # Add 1D distribution (similar to above but with seaborn) to Pdf file
@@ -150,7 +154,7 @@ class SeabornCanvas:
     #
     # Add a 2D scatter to Pdf file
     #
-    def drawJointPlot( self , d , xname , yname , kind='reg' ):
+    def drawJointPlot( self , d , xname , yname , kind='reg' , showr=True ):
 
         # Check that columns exist
         if not( xname in d.columns and yname in d.columns ):
@@ -160,7 +164,10 @@ class SeabornCanvas:
         float_d = d[[xname,yname]].astype(float)
 
         # Now draw the plot
-        sns.jointplot( xname , yname , data=float_d , kind=kind )
+        if showr:
+            sns.jointplot( xname , yname , data=float_d , kind=kind )
+        else:
+            sns.jointplot( xname , yname , data=float_d , kind=kind , stat_func=None )
         self.save()
         
 
@@ -177,7 +184,14 @@ class SeabornCanvas:
         f.tight_layout()
         self.save()
 
-
+    #
+    # Kernel density estimation plot
+    #
+    def drawKDEPlot( self , d , xname , yname=None , bw='scott' , shade=True ):
+        sns.kdeplot( d[xname] , data2=(d[yname] if yname!=None else None) , bw=bw , shade=shade )
+        self.save()
+        
+        
     #
     # Open up the output file using "Preview"
     #

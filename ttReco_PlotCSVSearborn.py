@@ -24,7 +24,7 @@ identifying particles in ttbar events coming from top decay
 """
 
 # Start by loading some input data from a CSV file
-df = pandas.DataFrame.from_csv( 'Data/DelphesTtbar_ljet_none_4_4_1000_0.csv.bz2' , index_col=False )
+df = pandas.DataFrame.from_csv( 'Data/ttReco/DelphesTtbar_ljet_none_4_4_1000_0.csv.bz2' , index_col=False )
 
 # Dump the number of columns in the dataset
 # (there must be a prettier way to code this...)

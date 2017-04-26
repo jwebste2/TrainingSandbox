@@ -27,7 +27,7 @@ using ROOT
 """
 
 # Create dataframes from the csv files
-df = pandas.DataFrame.from_csv( 'Data/DelphesTtbar_ljet_none_4_4_1000_0.csv.bz2' , index_col=False )
+df = pandas.DataFrame.from_csv( 'Data/ttReco/DelphesTtbar_ljet_none_4_4_1000_0.csv.bz2' , index_col=False )
 report.info( "Loaded" , len(df) , "events" )
 
 #
